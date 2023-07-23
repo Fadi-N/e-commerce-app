@@ -10,7 +10,7 @@ interface ModalProps {
     children?: React.ReactNode;
 }
 
-const Modal = ({title, isOpen, onClose, description, children}: ModalProps) => {
+export const Modal = ({title, isOpen, onClose, description, children}: ModalProps) => {
     const onChange = (open: boolean) => {
         if (!open) {
             onClose();
@@ -29,5 +29,3 @@ const Modal = ({title, isOpen, onClose, description, children}: ModalProps) => {
         </Dialog>
     )
 }
-
-export default Modal
