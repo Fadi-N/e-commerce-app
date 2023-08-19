@@ -1,7 +1,7 @@
 'use client'
 
 import {Store} from "@prisma/client";
-import Heading from "@/components/ui/Heading";
+import Heading from "@/components/ui/heading";
 import {Trash} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Separator} from "@/components/ui/separator";
@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import {useParams, useRouter} from "next/navigation";
 import AlertModal from "@/components/modals/alert-modal";
+import ApiAlert from "@/components/ui/api-alert";
 
 interface SettingsFormProps {
     initialData: Store;
@@ -111,6 +112,12 @@ export const SettingsForm = ({initialData}: SettingsFormProps) => {
                     </Button>
                 </form>
             </Form>
+            <Separator/>
+            <ApiAlert
+                title="NEXT_PUBLIC_API_URL"
+                description={`${origin}/api/${params.storeId}`}
+                variant="public"
+            />
         </>
     )
 }
