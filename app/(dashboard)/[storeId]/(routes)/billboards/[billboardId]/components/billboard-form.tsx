@@ -17,6 +17,7 @@ import {useParams, useRouter} from "next/navigation";
 import AlertModal from "@/components/modals/alert-modal";
 import ApiAlert from "@/components/ui/api-alert";
 import {useOrigin} from "@/hooks/use-origin";
+import ImageUpload from "@/components/ui/image-upload";
 
 const formSchema = z.object({
     label: z.string().min(1),
@@ -56,23 +57,23 @@ export const BillboardForm = ({initialData}: BillboardFormProps) => {
             await axios.patch(`/api/stores/${params.storeId}`, data);
             router.refresh();
             toast.success("Store updated.")
-        }catch (error){
+        } catch (error) {
             toast.error("Something went wrong.");
-        }finally {
+        } finally {
             setLoading(false);
         }
     }
 
-    const onDelete = async () =>{
+    const onDelete = async () => {
         try {
             setLoading(true);
             await axios.delete(`/api/stores/${params.storeId}`);
             router.refresh();
             router.push("/");
             toast.success("Store deleted.");
-        }catch (error){
+        } catch (error) {
             toast.error("Make sure you removed all products and categories first.")
-        }finally {
+        } finally {
             setLoading(false);
             setOpen(false);
         }
@@ -82,7 +83,7 @@ export const BillboardForm = ({initialData}: BillboardFormProps) => {
         <>
             <AlertModal
                 isOpen={open}
-                onClose={()=>setOpen(false)}
+                onClose={() => setOpen(false)}
                 onConfirm={onDelete}
                 loading={loading}
             />
@@ -105,6 +106,24 @@ export const BillboardForm = ({initialData}: BillboardFormProps) => {
             <Separator/>
             <Form {...form}>
                 <form className="space-y-8 w-full" onSubmit={form.handleSubmit(onSubmit)}>
+                    <FormField
+                        control={form.control}
+                        name="imageUrl"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Background image</FormLabel>
+                                <FormControl>
+                                    <ImageUpload
+                                        value={field.value ? [field.value] : []}
+                                        disabled={loading}
+                                        onChange={(url) => field.onChange(url)}
+                                        onRemove={() => field.onChange("")}
+                                    />
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
                     <div className="grid grid-cols-3 gap-8">
                         <FormField
                             control={form.control}
